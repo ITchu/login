@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>页面加载</title>
+</head>
+<style>
+	header,footer{
+		width: 100%;
+		height: 200px;
+		background: blue;
+		text-align: center;
+		line-height: 200px;
+	}
+	section{
+		width: 100%;
+		height: 300px;
+		display: flex;
+		justify-content: space-between;
+		align-content: space-between;
+		border: 2px #000 solid;
+		margin: 20px 0;
+	}
+	img{
+		display: block;
+		width: 25%;
+		height: 100%;
+	}
+	.leftside{
+	width: 35px;
+	position: fixed;
+	left: 20px;
+	top: 42.5%;
+	text-align: center;
+	z-index: 999;
+	opacity: 0;
+}
+.leftside>ul>li{
+	width: 36px;
+	height: 36px;
+	margin-top: 1px;
+	font-size: 12px;
+	overflow: hidden;
+	text-align: center;
+	line-height: 36px;
+	background: rgba(0,0,0,0.6);
+	border: 1px #000 solid;
+	color: #fff;
+}
+.leftside>ul>li>div{
+	width: 24px;
+	height: 28px;
+	line-height: 12px;
+	margin: 6px auto;
+}
+.gudinglan{
+	width: 100%;
+	height: 50px;
+	position:fixed;
+	background: #ff0036;
+	z-index: 99999;
+	top: -80px;
+}
+.neirong{
+	width: 1230px;
+	height: 100%;
+	background: #ff0036;
+	margin: 0 auto;
+	position: relative;
+}
+.neirong>span:first-child{
+	color: #fff;
+	font-size: 24px;
+	line-height: 50px;
+	margin-left: 20px;
+}
+.neirong>span:nth-child(2){
+	color: #fff;
+	font-size: 22px;
+	line-height: 50px;
+}
+.neirong>input{
+	width: 648px;
+	height: 20px;
+	padding: 5px 3px 5px 5px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	border: none;
+}
+.neirong>input:focus{
+	outline: none;
+}
+.neirong>button{
+	width: 90px;
+	height: 32px;
+	position: absolute;
+	top: 10px;
+	left: 943px;
+	font-size: 16px;
+	color: #fff;
+	border: none;
+	background:  #ff0036;
+}
+</style>
+<body>
+ <div class="gudinglan">
+   <div  class="neirong">
+     <span>TMALL</span>
+     <span>天猫</span>
+     <input type="text" placeholder="白领上班必备零食" >
+     <button>搜索</button>
+   </div>
+ </div>	
+	<header>头部</header>
+	<div class="leftside">
+    <ul>
+      <li><div class="asidename">天猫品牌</div></li>
+      <li><div class="asidename">天猫潮流</div></li>
+      <li><div class="asidename">美丽人生</div></li>
+      <li><div class="asidename">猜你喜欢</div></li>
+      <li><div class="asidename">顶部</div></li>
+    </ul>
+  </div>
+	<section>
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+	</section>
+	<section>
+		<img src="" alt="" imgPath="tu3-50.jpg">
+
+		<img src="" alt="" imgPath="tu3-50.jpg">
+
+		<img src="" alt="" imgPath="tu3-50.jpg">
+
+		<img src="" alt="" imgPath="tu3-50.jpg">
+	</section>
+	<section>
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+	</section>
+	<section>
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+
+		<img src="" alt="" imgPath="tu2-50.jpg">
+	</section>
+	<section>
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+
+		<img src="" alt="" imgPath="tu4-50.jpg">
+	</section>
+	<footer>尾部</footer>
+</body>
+</html>
+<script>
+	window.onload=function(){
+		//ch   浏览器可视窗口
+		let ch=innerHeight;
+		//sect 每一个模块
+		let sect=document.querySelectorAll('section');
+		let arr=[]
+		//每个模块的距离文档的高度
+		let ls=document.querySelector('.leftside');
+		let aside=document.querySelectorAll('li');
+		let color=['orange','red','green','blue','pink'];
+		let flag=true;
+		sect.forEach(element=>arr.push(element.offsetTop));
+		let s=0;
+		let guding=true;
+		let gdl=document.querySelector('.gudinglan');
+		aside.forEach((element,index)=>{
+			    element.onclick=function(){
+			    	aside[s].style.background='none';
+			    	s=index;
+			    	aside[index].style.background=color[index];
+			        animate(document.documentElement, {scrollTop:arr[index]},function(){flag=true});
+			        flag=false;
+		        }
+	        });
+		window.onscroll=function(){
+			if(!flag){
+				return ;
+			}
+			let scr=document.documentElement.scrollTop;
+			arr.forEach((element,index)=>{
+				if(scr>element-80){
+					//获取页面中的图片
+			        aside[s].style.background='none';
+			        s=index;
+		            aside[s].style.background=color[index];
+					let imgs=sect[index].getElementsByTagName('img');
+					for(let i=0;i<imgs.length;i++){
+					    imgs[i].src=imgs[i].getAttribute('imgPath');
+				    }
+
+				}
+			});
+			if(scr<800){
+				if(!guding){
+					guding=!guding;
+					console.log(1);
+					animate(ls,{opacity:0})
+					animate(gdl,{top:-80});
+				}
+			}
+			else if(scr>=800){
+				if(guding){
+					guding=!guding;
+					console.log(0);
+					animate(ls,{opacity:1})
+					animate(gdl,{top:0});
+				}
+			}
+		}
+	}
+</script>
+<script src="animate.js"></script>
