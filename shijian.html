@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件</title>
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.box{
+		width: 200px;
+		height: 200px;
+		background: blue;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.box1{
+		width: 200px;
+		height: 200px;
+		background:red;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.box>img{
+		width: 100%;
+		height: 100%;
+	}
+	.small{
+		display: inline-block;
+		width: 300px;
+		height: 300px;
+		/* background: blue; */
+		position: relative;
+	}
+	img{
+		width: 100%;
+		height: 100%;
+	}
+	.big{
+		display: inline-block;
+		width: 300px;
+		height: 300px;
+		/* background: blue; */
+		position: relative;
+		overflow: hidden;
+		border: 1px solid #000;
+	}
+	.big>img{
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.zhe{
+		width: 100px;
+		height: 100px;
+		background: rgba(0, 0, 0, 0.6);
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0;
+	}
+	.op{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+
+	}
+</style>
+<body>
+	<!-- <div class="box"></div>
+	<div class="box1"></div> -->
+	<div class="small">
+	  <img src="tu2-50.jpg" alt="">
+	  <div class="zhe"></div>
+	  <div class="op"></div>
+	</div>
+	<div class="big">
+	    <img src="tu2-50.jpg" alt="">
+	</div>
+	
+</body>
+</html>
+<script>
+let box=document.querySelector('.box');
+let box1=document.querySelector('.box1');
+let small=document.querySelector('.small');
+let big=document.querySelector('.big');
+	window.addEventListener('load', function(){
+		box.addEventListener('mousedown', function(e){
+			let ox=e.offsetX, oy=e.offsetY;
+			document.addEventListener('mousemove', fn);
+			box.addEventListener('mouseup', function(){
+				document.removeEventListener('mousemove',fn);
+			})
+			function fn(e){
+				let lefts=e.clientX-ox,tops=e.clientY-oy;
+				// box.style.top=`${tops}px`;
+				box.style.left=`${lefts}px`;
+			}
+		});
+
+	})
+	//拖拽 鼠标按住移动
+	//参数
+	class Drag{
+		constructor(obj){
+			this.obj=obj;
+		}
+		move(){
+			let that=this;
+			this.obj.addEventListener('mousedown',function(e){
+			let ox=e.offsetX, oy=e.offsetY;
+			document.addEventListener('mousemove', fn);
+			that.obj.addEventListener('mouseup', function(){
+				document.removeEventListener('mousemove',fn);
+			})
+			function fn(e){
+				let lefts=e.clientX-ox,tops=e.clientY-oy;
+				that.obj.style.top=`${tops}px`;
+				that.obj.style.left=`${lefts}px`;
+			}
+		  });
+		}
+	}
+let obj=new Drag(box);
+obj.move();
+let obj1=new Drag(box1);
+obj1.move();
+//放大对应的图片
+//参数说明
+//bimg 大图片 zhe 遮罩  op 与图片等大的遮罩
+//smallw 小图的宽   smallh 小图的高
+//bigw 大图的宽   bigh 大图的高
+//zhew z遮罩的宽   zheh z遮罩的高
+window.addEventListener('load', function(){
+	let bimg=big.querySelector('img');
+	let zhe=document.querySelector('.zhe');
+	let op=document.querySelector('.op');
+	let smallw=small.offsetWidth,
+	    smallh=small.offsetHeight,
+	    bigw=big.offsetWidth,
+	    bigh=big.offsetHeight,
+	    zhew=zhe.offsetWidth,
+	    zheh=zhe.offsetHeight;
+	op.addEventListener('mousemove', function(e){
+		let ox=e.offsetX,oy=e.offsetY;
+		zhe.style.opacity=1;
+		if(ox>=smallw-zhew){
+			ox=smallw-zhew;
+		}
+		if(ox<0){
+			ox=0;
+		}
+		if(oy>=smallh-zheh){
+			oy=smallh-zheh;
+		}
+		if(oy<0){
+			oy=0;
+		}
+		zhe.style.left=`${ox}px`;
+		zhe.style.top=`${oy}px`;
+		bimg.style.width=smallw*bigw/zhew+'px';
+		bimg.style.height=smallh*bigh/zheh+'px';
+		bimg.style.left=-smallw*ox/zhew+'px';
+		bimg.style.top=-smallh*oy/zheh+'px';
+	})
+})
+</script>

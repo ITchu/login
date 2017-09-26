@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>节点属性</title>
+</head>
+<body>
+	<div class="box">
+		div.box标签
+	</div>
+	<ul class="box1">
+	    ul.box1标签
+	    <li class="li1">li.li1标签
+		   <p class="par">p.par标签</p>
+		</li>
+		<span>这是span标签</span>
+	    <div>div</div>
+		 <p class="box2">
+		    p.box2标签
+	    </p> 
+		<li>li标签
+		   <p class="par">p.par标签</p>
+		</li> 
+	</ul>
+	<p>这是p标签</p>
+	<!-- 注释节点 -->
+	<div>这是div标签</div>
+</body>
+</html>
+<script>
+    let body=document.querySelector('body');
+	Array.prototype.forEach.call(obj,function(value){
+	 	if(value.nodeType==1){
+	 		console.log(value);
+	 	}
+	});
+	let a=Array.prototype.filter.call(obj,(value)=> value.nodeType==1);
+	console.log(a);
+	function child(parse){
+		let p=parse.childNodes;
+		let f=Array.from(p);
+		return f.filter((element)=> element.nodeType==1);
+	}
+	function childs(parse){
+		let newarr=[];
+		let p=parse.childNodes;
+		p.forEach((element)=>{
+			if(element.nodeType==1){
+				newarr.push(element);
+			}
+		});
+		return newarr;
+	}
+    console.log(child(body));
+	console.log(childs(body));
+
+    //next  离它最近的下面的兄弟元素
+	function next(element,tagname){
+		let parsent=element.parentNode;
+		let child=parsent.childNodes;
+		let index=0;
+		for(let i=0;i<child.length;i++){
+			if(child[i]==element){
+				index=i+1;
+				break;
+			}
+		}
+		let nextAll=Array.from(child).slice(index);
+		for(let j=0;j<nextAll.length;j++){
+		    if(nextAll[j].nodeName==tagname.toUpperCase()){
+			    return nextAll[j];
+		    }
+		}
+		return null;
+	}
+	function nextwhile(element,tagename){
+		let tage=tagename.toUpperCase();
+		while(true){
+			let next=element.nextElementSibling;
+			if(next==null){
+				return null;
+			}
+			if(next.nodeName==tage){
+				return next;
+			}
+			
+			element=next;
+		}
+	}
+	let li=document.querySelector('li');
+	console.log(nextwhile(li,'li'));
+	//previous  离它最近的上面的兄弟元素
+	function previous(element,tagename){
+		let tage=tagename.toUpperCase();
+		let pre=element.previousElementSibling;
+		while(true){
+			if(pre==null){
+				return null;
+			}
+			if(pre.nodeName==tage){
+				return pre;
+			}
+			
+			pre=pre.previousElementSibling;
+		}
+	}
+	
+	let p=document.querySelector('.box2');
+	console.log(previous(p,'span'));
+	//closed   离它最近的父元素
+	//while循环 方法
+	function closed(element,parent){
+		let par=parent.toUpperCase();
+		let pa=element.parentNode;
+		while(true){
+			if(pa==null){
+				return null;
+			}
+			if(pa.nodeName==par){
+				return pa;
+			}
+			pa=pa.parentNode;
+		}
+	}
+	let p1=document.querySelector('.par');
+	console.log(closed(p1,'ul'));
+	//递归方法
+	function closed1(element,parent){
+		let pa=parent.toUpperCase();
+		let el=element.parentNode;
+		if(el==null){
+			return null;
+		}
+		if(el.nodeName!=pa){
+			return closed1(el,pa);
+		}
+		return el;
+	}
+	console.log(closed1(p1,'ul'));
+	//输出元素父级的父级
+	function parent(element){
+		if(element.nodeName=='BODY'||element.nodeName=='HTML'){
+			return null;
+		}
+		let arr=[];
+		let parent=element.parentNode;
+		while(parent.nodeName!='BODY'){
+			arr.push(parent);
+			parent=parent.parentNode;
+		}
+		return arr;
+	}
+	console.log(parent(p1));
+</script>
